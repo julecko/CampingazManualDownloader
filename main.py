@@ -1,13 +1,17 @@
 from bs4 import BeautifulSoup
 import requests
+from pathlib import Path
 
-
+DOWNLOAD_FOLDER = "files"
 MAIN_URL = "https://www.campingaz.cz/en/after-sales-eu.html"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/145.0.3800.58",
     "Sec-GPC": "1",
 }
+
+def ensure_directory(folder_path):
+    Path(folder_path).mkdir(parents=True, exist_ok=True)
 
 
 def extract_categories(url):
@@ -38,6 +42,8 @@ def extract_categories(url):
 
 
 def main():
+    ensure_directory(DOWNLOAD_FOLDER)
+
     products = extract_categories(MAIN_URL)
     if not products:
         print("Products extraction failure")
